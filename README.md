@@ -1,3 +1,7 @@
+To Do for this fork:
+Add "Discovery" option to run NSE Discovery scripts, seperately, and prior to the vuln scanning when running "ALL"
+
+------------------------------------------
 # nmapAutomator
 A script that you can run in the background!
   
