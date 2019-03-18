@@ -17,6 +17,7 @@ echo -e "\tQuick:	Shows all open ports quickly (~15 seconds)"
 echo -e "\tBasic:	Runs Quick Scan, then a runs more thorough scan on found ports (~5 minutes)"
 echo -e "\tUDP:	Runs \"Basic\" on UDP ports (~5 minutes)"
 echo -e "\tFull:	Runs a full range port scan, then runs a thorough scan on new ports (~5-10 minutes)"
+echo -e "\tDiscovery:	Runs the NSE Discovery scripts on found ports (~5-10 minutes)"
 echo -e "\tVulns:	Runs CVE scan and nmap Vulns scan on all found ports (~5-15 minutes)"
 echo -e "\tRecon:	Suggests recon commands, then prompts to automatically run them"
 echo -e "\tAll:	Runs all the scans (~20-30 minutes)"
@@ -218,6 +219,27 @@ else
 	fi
 fi
 
+echo -e ""
+echo -e ""
+echo -e ""
+}
+
+discoveryScan(){
+echo -e "${GREEN}---------------------Starting Nmap Discovery Scan---------------------"
+echo -e "${NC}"
+
+if [ -z `echo "${allPorts}"` ]; then
+	portType="basic"
+	ports=`echo "${basicPorts}"`
+else
+	portType="all"
+	ports=`echo "${allPorts}"`
+fi
+
+echo ""
+echo -e "${YELLOW}Running Discovery scan on $portType ports"
+echo -e "${NC}"
+$nmapType -sV --script discovery -p`echo "${ports}"` -oN nmap/discovery_$1.nmap $1
 echo -e ""
 echo -e ""
 echo -e ""
@@ -503,7 +525,7 @@ else
 	usage
 fi
 
-if [[ "$2" =~ ^(Quick|Basic|UDP|Full|Vulns|Recon|All)$ ]]; then
+if [[ "$2" =~ ^(Quick|Basic|UDP|Full|Discovery|Vulns|Recon|All)$ ]]; then
 	if [[ ! -d $1 ]]; then
 	        mkdir $1
 	fi
@@ -524,6 +546,8 @@ if [[ "$2" =~ ^(Quick|Basic|UDP|Full|Vulns|Recon|All)$ ]]; then
 			basicScan $1;;
 		UDP) 	UDPScan $1;;
 		Full) 	fullScan $1;;
+		Discovery) 	if [ ! -f nmap/Quick_$1.nmap ]; then quickScan $1; fi
+			discoveryScan $1;;
 		Vulns) 	if [ ! -f nmap/Quick_$1.nmap ]; then quickScan $1; fi
 			vulnsScan $1;;
 		Recon) 	if [ ! -f nmap/Quick_$1.nmap ]; then quickScan $1; fi
@@ -533,6 +557,7 @@ if [[ "$2" =~ ^(Quick|Basic|UDP|Full|Vulns|Recon|All)$ ]]; then
 			basicScan $1
 			UDPScan $1
 			fullScan $1
+			discoveryScan $1
 			vulnsScan $1
 			recon $1;;
 	esac
