@@ -3,6 +3,8 @@
 * ~~give option for it~~
 * ~~make it come prior to the vuln scanning when running "ALL"~~
 * test it out
+* update basic README.md
+* submit pull request
 
 ------------------------------------------
 # nmapAutomator
