@@ -1,7 +1,8 @@
 # To Do for this fork:
-* Add "Discovery" option to run NSE Discovery scripts
-* give option for it
-* make it come prior to the vuln scanning when running "ALL"
+* ~~Add "Discovery" option to run NSE Discovery scripts~~
+* ~~give option for it~~
+* ~~make it come prior to the vuln scanning when running "ALL"~~
+* test it out
 
 ------------------------------------------
 # nmapAutomator
